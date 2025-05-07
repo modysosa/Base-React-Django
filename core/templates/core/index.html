@@ -1,0 +1,17 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Home - Django React App{% endblock %}
+
+{% block content %}
+    <div id="root"></div>
+{% endblock %}
+
+{% block extra_js %}
+    <!-- React and ReactDOM CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Our React component -->
+    <script type="text/babel" src="/static/js/app.js"></script>
+{% endblock %}

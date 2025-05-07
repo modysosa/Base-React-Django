@@ -1,0 +1,59 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h2>Profile</h2>
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-4 text-center">
+                        <img src="{{ user.profile.image.url|default:'https://via.placeholder.com/150' }}" alt="Profile Picture" class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                    </div>
+                    <div class="col-md-8">
+                        <h3>{{ user.username }}</h3>
+                        <p><strong>Email:</strong> {{ user.email }}</p>
+                        <p><strong>Joined:</strong> {{ user.date_joined|date:"F d, Y" }}</p>
+                    </div>
+                </div>
+                
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="id_username" class="form-label">Username</label>
+                        <input type="text" name="username" value="{{ user.username }}" class="form-control {% if form.username.errors %}is-invalid{% endif %}" id="id_username" required>
+                        {% if form.username.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.username.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_email" class="form-label">Email</label>
+                        <input type="email" name="email" value="{{ user.email }}" class="form-control {% if form.email.errors %}is-invalid{% endif %}" id="id_email" required>
+                        {% if form.email.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.email.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_image" class="form-label">Profile Picture</label>
+                        <input type="file" name="image" class="form-control {% if form.image.errors %}is-invalid{% endif %}" id="id_image">
+                        {% if form.image.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.image.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Profile</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
