@@ -1,11 +1,12 @@
-# Django Project with React Integration
+# Django Project with React Integration and Real-time Chat
 
-A full-stack web application built with Django and React. This project includes user authentication, profile management, and a React frontend.
+A full-stack web application built with Django and React. This project includes user authentication, profile management, a React frontend, and a real-time chat feature with emoji support.
 
 ## Features
 
 - User authentication (register, login, logout)
 - User profile management
+- Real-time chat between users with emoji support
 - React integration for dynamic frontend
 - RESTful API endpoints
 - Bootstrap for responsive design
@@ -83,6 +84,7 @@ python manage.py runserver
 
 - `core/` - Main application with React integration
 - `users/` - User authentication and profile management
+- `chat/` - Real-time chat functionality with emoji support
 - `mysite/` - Project settings and main URL configuration
 - `media/` - User-uploaded files (profile pictures)
 - `static/` - Static files (CSS, JavaScript, images)
@@ -95,6 +97,16 @@ The project includes a complete user authentication system:
 2. Login at `/users/login/`
 3. View and edit your profile at `/users/profile/`
 4. Logout at `/users/logout/`
+
+## Chat Feature
+
+The project includes a WhatsApp-like chat feature:
+
+1. Chat window appears at the bottom right for authenticated users
+2. Select a user from the list to start a conversation
+3. Send messages with text and emojis
+4. View message history and unread message indicators
+5. Minimize/maximize the chat window as needed
 
 ## React Integration
 
