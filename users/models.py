@@ -7,6 +7,11 @@ from PIL import Image
 # Create your models here.
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100, blank=True)
+    full_name = models.CharField(max_length=255, blank=True)
+    mobile_number = models.CharField(max_length=20, blank=True)
+    job = models.CharField(max_length=100, blank=True)
+    address = models.TextField(max_length=500, blank=True)
     image = models.ImageField(default='default.jpg', upload_to='profile_pics')
     bio = models.TextField(max_length=500, blank=True)
     

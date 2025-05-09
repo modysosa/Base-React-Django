@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-md-6 offset-md-3">
+    <div class="col-md-8 offset-md-2">
         <div class="card">
             <div class="card-header bg-primary text-white">
                 <h2>Profile</h2>
@@ -17,39 +17,121 @@
                     <div class="col-md-8">
                         <h3>{{ user.username }}</h3>
                         <p><strong>Email:</strong> {{ user.email }}</p>
+                        <p><strong>Name:</strong> {{ user.profile.name }}</p>
+                        <p><strong>Full Name:</strong> {{ user.profile.full_name }}</p>
+                        <p><strong>Job:</strong> {{ user.profile.job }}</p>
+                        <p><strong>Mobile:</strong> {{ user.profile.mobile_number }}</p>
                         <p><strong>Joined:</strong> {{ user.date_joined|date:"F d, Y" }}</p>
                     </div>
                 </div>
                 
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_username" class="form-label">Username</label>
+                                <input type="text" name="username" value="{{ user.username }}" class="form-control {% if u_form.username.errors %}is-invalid{% endif %}" id="id_username" required>
+                                {% if u_form.username.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ u_form.username.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_email" class="form-label">Email</label>
+                                <input type="email" name="email" value="{{ user.email }}" class="form-control {% if u_form.email.errors %}is-invalid{% endif %}" id="id_email" required>
+                                {% if u_form.email.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ u_form.email.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_name" class="form-label">Name</label>
+                                <input type="text" name="name" value="{{ user.profile.name }}" class="form-control {% if p_form.name.errors %}is-invalid{% endif %}" id="id_name">
+                                {% if p_form.name.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ p_form.name.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_full_name" class="form-label">Full Name</label>
+                                <input type="text" name="full_name" value="{{ user.profile.full_name }}" class="form-control {% if p_form.full_name.errors %}is-invalid{% endif %}" id="id_full_name">
+                                {% if p_form.full_name.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ p_form.full_name.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_job" class="form-label">Job</label>
+                                <input type="text" name="job" value="{{ user.profile.job }}" class="form-control {% if p_form.job.errors %}is-invalid{% endif %}" id="id_job">
+                                {% if p_form.job.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ p_form.job.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_mobile_number" class="form-label">Mobile Number</label>
+                                <input type="text" name="mobile_number" value="{{ user.profile.mobile_number }}" class="form-control {% if p_form.mobile_number.errors %}is-invalid{% endif %}" id="id_mobile_number">
+                                {% if p_form.mobile_number.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ p_form.mobile_number.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="mb-3">
-                        <label for="id_username" class="form-label">Username</label>
-                        <input type="text" name="username" value="{{ user.username }}" class="form-control {% if form.username.errors %}is-invalid{% endif %}" id="id_username" required>
-                        {% if form.username.errors %}
+                        <label for="id_address" class="form-label">Address</label>
+                        <textarea name="address" class="form-control {% if p_form.address.errors %}is-invalid{% endif %}" id="id_address" rows="3">{{ user.profile.address }}</textarea>
+                        {% if p_form.address.errors %}
                             <div class="invalid-feedback">
-                                {{ form.username.errors }}
+                                {{ p_form.address.errors }}
                             </div>
                         {% endif %}
                     </div>
+                    
                     <div class="mb-3">
-                        <label for="id_email" class="form-label">Email</label>
-                        <input type="email" name="email" value="{{ user.email }}" class="form-control {% if form.email.errors %}is-invalid{% endif %}" id="id_email" required>
-                        {% if form.email.errors %}
+                        <label for="id_bio" class="form-label">Bio</label>
+                        <textarea name="bio" class="form-control {% if p_form.bio.errors %}is-invalid{% endif %}" id="id_bio" rows="3">{{ user.profile.bio }}</textarea>
+                        {% if p_form.bio.errors %}
                             <div class="invalid-feedback">
-                                {{ form.email.errors }}
+                                {{ p_form.bio.errors }}
                             </div>
                         {% endif %}
                     </div>
+                    
                     <div class="mb-3">
                         <label for="id_image" class="form-label">Profile Picture</label>
-                        <input type="file" name="image" class="form-control {% if form.image.errors %}is-invalid{% endif %}" id="id_image">
-                        {% if form.image.errors %}
+                        <input type="file" name="image" class="form-control {% if p_form.image.errors %}is-invalid{% endif %}" id="id_image">
+                        {% if p_form.image.errors %}
                             <div class="invalid-feedback">
-                                {{ form.image.errors }}
+                                {{ p_form.image.errors }}
                             </div>
                         {% endif %}
                     </div>
+                    
                     <button type="submit" class="btn btn-primary">Update Profile</button>
                 </form>
             </div>
