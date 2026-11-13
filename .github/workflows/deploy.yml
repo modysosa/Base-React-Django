@@ -1,0 +1,43 @@
+name: Deploy to server
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-base-react-django
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    runs-on: [self-hosted, Linux, X64]
+    timeout-minutes: 15
+
+    steps:
+      - name: Download code
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Stop application
+        run: sudo -n /usr/bin/systemctl stop base-react-django
+
+      - name: Deploy code and migrate database
+        run: sudo -n -u baseapp /usr/local/bin/deploy-base-react-django
+
+      - name: Start application
+        if: always()
+        run: sudo -n /usr/bin/systemctl start base-react-django
+
+      - name: Check website
+        run: |
+          curl --fail --silent --show-error \
+            --retry 10 --retry-delay 3 --retry-connrefused \
+            --max-time 10 \
+            --output /dev/null \
+            http://10.10.10.111:8000/
