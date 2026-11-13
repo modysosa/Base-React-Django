@@ -1,138 +1,58 @@
-# Django Project with Real-time Chat Feature - Installation Guide
+﻿# Local installation
 
-This guide will help you set up and run this Django project with a real-time chat feature on Windows, macOS, or Linux.
+Use Python 3.12 with the pinned dependencies in `requirements.txt`. Browser libraries load from CDNs and require internet access. There is no npm install or frontend build.
 
-## Prerequisites
+## Windows PowerShell
 
-Before you begin, make sure you have the following installed:
-- Python 3.8 or higher
-- pip (Python package manager)
-- Git (optional, for cloning the repository)
+Run from the repository root:
 
-## Installation Steps
-
-### Step 1: Clone or Download the Repository
-
-**Option 1: Clone with Git**
-```bash
-git clone https://github.com/modysosa/Base-React-Django.git
-cd Base-React-Django
+```powershell
+py -3.12 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe manage.py migrate
+.\.venv\Scripts\python.exe manage.py check
+.\.venv\Scripts\python.exe manage.py test
+.\.venv\Scripts\python.exe manage.py runserver 127.0.0.1:8000
 ```
 
-**Option 2: Download ZIP**
-- Download the ZIP file from GitHub
-- Extract it to your preferred location
-- Open a terminal/command prompt and navigate to the extracted folder
+If the Python launcher points to a missing installation, use:
 
-### Step 2: Set Up a Virtual Environment
-
-#### Windows
-```bash
-# Create a virtual environment
-python -m venv venv
-
-# Activate the virtual environment
-venv\Scripts\activate
+```powershell
+uv venv --python 3.12 .venv
+.\.venv\Scripts\python.exe -m ensurepip --upgrade
+uv pip install --python .venv/Scripts/python.exe -r requirements.txt
 ```
 
-#### macOS/Linux
-```bash
-# Create a virtual environment
-python3 -m venv venv
+Calling the environment's Python directly avoids PowerShell activation policy changes. For subsequent runs, only the `runserver` command is needed.
 
-# Activate the virtual environment
-source venv/bin/activate
-```
-
-### Step 3: Install Dependencies
+## macOS / Linux
 
 ```bash
-# Install required packages
-pip install -r requirements.txt
-
-# If requirements.txt is not available, install these packages:
-pip install django==4.1.8
-pip install Pillow
+python3.12 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+.venv/bin/python manage.py migrate
+.venv/bin/python manage.py check
+.venv/bin/python manage.py test
+.venv/bin/python manage.py runserver 127.0.0.1:8000
 ```
 
-### Step 4: Apply Migrations
+## Try the application
 
-```bash
-# Apply migrations to set up the database
-python manage.py migrate
-```
+- Home: http://127.0.0.1:8000/
+- JSON API: http://127.0.0.1:8000/api/example/
+- Register: http://127.0.0.1:8000/users/register/
+- Login: http://127.0.0.1:8000/users/login/
+- Profile (login required): http://127.0.0.1:8000/users/profile/
+- Admin: http://127.0.0.1:8000/admin/
 
-### Step 5: Create a Superuser (Admin)
+Create your own account through registration. Admin access is optional: run `.\.venv\Scripts\python.exe manage.py createsuperuser` and choose your own credentials. Setup does not create accounts or default passwords.
 
-```bash
-# Create an admin user to manage the application
-python manage.py createsuperuser
-```
-Follow the prompts to create your admin username, email, and password.
+For chat, register two accounts and sign in through separate browser sessions (for example, a normal window and a private window). Select the other user in the chat panel. The frontend polls every 10 seconds; it does not use WebSockets.
 
-### Step 6: Run the Development Server
+SQLite data lives in `db.sqlite3`; uploaded images live in `media/`. Preserve existing files. Tests use a separate in-memory database. The repository does not include `media/default.jpg`, so an account without an uploaded photo may show a broken image.
 
-```bash
-# Start the Django development server
-python manage.py runserver
-```
+If port 8000 is occupied, use `runserver 127.0.0.1:8080`. Django serves static files automatically in local debug mode; `collectstatic` is not needed. Check schema consistency with `makemigrations --check --dry-run`; generate migrations only when intentionally changing models.
 
-The server will start at http://127.0.0.1:8000/
+## Before publishing
 
-## Accessing the Application
-
-- **Main Site**: http://127.0.0.1:8000/
-- **Admin Panel**: http://127.0.0.1:8000/admin/
-
-## Using the Chat Feature
-
-1. Register at least two user accounts or use the admin account plus another account
-2. Log in with one account
-3. Open an incognito/private window and log in with another account
-4. The chat window appears at the bottom right of the screen for logged-in users
-5. Select a user from the list to start chatting
-6. Use the emoji button to add emojis to your messages
-
-## Troubleshooting
-
-### Database Issues
-If you encounter database issues, try:
-```bash
-python manage.py makemigrations
-python manage.py migrate
-```
-
-### Static Files Not Loading
-If static files (CSS, JS) are not loading properly:
-```bash
-python manage.py collectstatic
-```
-
-### Port Already in Use
-If port 8000 is already in use, specify a different port:
-```bash
-python manage.py runserver 8080
-```
-
-## Platform-Specific Notes
-
-### Windows
-- Use backslashes (`\`) for file paths in commands
-- If Python is not in your PATH, use the full path to Python executable
-
-### macOS/Linux
-- Use forward slashes (`/`) for file paths
-- You might need to use `python3` instead of `python` depending on your setup
-- You might need to use `sudo` for some commands if you encounter permission issues
-
-## Additional Information
-
-- The chat feature uses Django's built-in authentication system
-- Messages are stored in the database and retrieved when users select a conversation
-- The emoji picker is implemented with pure JavaScript and CSS, no external libraries required
-
-## Need Help?
-
-If you encounter any issues or have questions, please open an issue on the GitHub repository or contact the project maintainer.
-
-Happy chatting!
+Show the changes and test results to the user and wait for approval before any push to `main`. That push automatically triggers deployment. Current settings are for development and require a separate production configuration.

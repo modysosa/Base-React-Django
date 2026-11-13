@@ -29,9 +29,12 @@ media/
 !media/default.jpg
 
 # Virtual Environment
+.venv/
 venv/
 ENV/
 env/
+.env
+staticfiles/
 
 # IDE
 .idea/
